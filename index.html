@@ -9,15 +9,89 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Базовые стили */
+        /* Базовые стили и переменные для тем */
+        :root {
+            --bg-color: #f3f4f6; /* Светлый фон по умолчанию (Tailwind gray-100) */
+            --text-color: #1f2937; /* Темный текст по умолчанию (Tailwind gray-800) */
+            --text-muted-color: #6b7280; /* Приглушенный текст (Tailwind gray-500) */
+            --card-bg: #ffffff; /* Белый фон карточек */
+            --card-border: #e5e7eb; /* Светлая граница карточек (Tailwind gray-200) */
+            --header-bg: #ffffff; /* Белый фон шапки */
+            --header-border: #e5e7eb; /* Светлая граница шапки */
+            --sidebar-bg: #ffffff; /* Белый фон сайдбара */
+            --sidebar-border: #e5e7eb; /* Светлая граница сайдбара */
+            --sidebar-link-color: #374151; /* Цвет ссылок сайдбара (Tailwind gray-700) */
+            --sidebar-link-hover-bg: #f3f4f6; /* Фон ссылок сайдбара при наведении (Tailwind gray-100) */
+            --sidebar-link-hover-color: #111827; /* Цвет ссылок сайдбара при наведении (Tailwind gray-900) */
+            --sidebar-link-active-bg: #ef4444; /* Активная ссылка сайдбара (Tailwind red-500) */
+            --sidebar-link-active-color: #ffffff; /* Активная ссылка сайдбара */
+            --dropdown-bg: #ffffff; /* Фон выпадающего списка */
+            --dropdown-border: #e5e7eb; /* Граница выпадающего списка */
+            --dropdown-item-text: #374151; /* Текст элемента списка */
+            --dropdown-item-hover-bg: #f3f4f6; /* Фон элемента списка при наведении */
+            --dropdown-item-active-bg: #fee2e2; /* Фон активного элемента списка (Tailwind red-100) */
+            --dropdown-item-active-text: #dc2626; /* Текст активного элемента списка (Tailwind red-600) */
+            --button-bg: #e5e7eb; /* Фон кнопок (Tailwind gray-200) */
+            --button-text: #374151; /* Текст кнопок */
+            --button-hover-bg: #d1d5db; /* Фон кнопок при наведении (Tailwind gray-300) */
+            --section-title-color: #1f2937; /* Цвет заголовков секций */
+            --section-border-color: #ef4444; /* Цвет границы под заголовком */
+            --price-color: #dc2626; /* Цвет цены (Tailwind red-600) */
+            --footer-bg: #1f2937; /* Темный фон подвала (Tailwind gray-800) */
+            --footer-text: #d1d5db; /* Светлый текст подвала (Tailwind gray-300) */
+            --footer-disclaimer-text: #9ca3af; /* Цвет дисклеймера в подвале (Tailwind gray-400) */
+        }
+
+        /* Стили для темной темы */
+        html.dark {
+            --bg-color: #111827; /* Очень темно-серый фон (Tailwind gray-900) */
+            --text-color: #d1d5db; /* Светло-серый текст (Tailwind gray-300) */
+            --text-muted-color: #9ca3af; /* Приглушенный текст (Tailwind gray-400) */
+            --card-bg: #1f2937; /* Темно-серый фон карточек (Tailwind gray-800) */
+            --card-border: #374151; /* Темная граница карточек (Tailwind gray-700) */
+            --header-bg: #1f2937; /* Темный фон шапки */
+            --header-border: #374151; /* Темная граница шапки */
+            --sidebar-bg: #1f2937; /* Темный фон сайдбара */
+            --sidebar-border: #374151; /* Темная граница сайдбара */
+            --sidebar-link-color: #d1d5db; /* Светлый текст ссылок сайдбара */
+            --sidebar-link-hover-bg: #374151; /* Темный фон ссылок при наведении */
+            --sidebar-link-hover-color: #ffffff; /* Белый текст ссылок при наведении */
+            --sidebar-link-active-bg: #dc2626; /* Красный фон активной ссылки */
+            --sidebar-link-active-color: #ffffff; /* Белый текст активной ссылки */
+            --dropdown-bg: #374151; /* Темный фон выпадающего списка */
+            --dropdown-border: #4b5563; /* Граница выпадающего списка (Tailwind gray-600) */
+            --dropdown-item-text: #d1d5db; /* Текст элемента списка */
+            --dropdown-item-hover-bg: #4b5563; /* Фон элемента списка при наведении */
+            --dropdown-item-active-bg: #991b1b; /* Темно-красный фон активного элемента (Tailwind red-900) */
+            --dropdown-item-active-text: #ffffff; /* Текст активного элемента списка */
+            --button-bg: #4b5563; /* Фон кнопок (Tailwind gray-600) */
+            --button-text: #d1d5db; /* Текст кнопок */
+            --button-hover-bg: #6b7280; /* Фон кнопок при наведении (Tailwind gray-500) */
+            --section-title-color: #f3f4f6; /* Цвет заголовков секций (Tailwind gray-100) */
+            --section-border-color: #f87171; /* Светло-красная граница под заголовком (Tailwind red-400) */
+            --price-color: #f87171; /* Светло-красный цвет цены */
+            --footer-bg: #000000; /* Черный фон подвала */
+            --footer-text: #9ca3af; /* Серый текст подвала (Tailwind gray-400) */
+            --footer-disclaimer-text: #6b7280; /* Цвет дисклеймера в подвале (Tailwind gray-500) */
+        }
+
+        /* Применение переменных */
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        /* Стили для шапки */
-        .header-pattern { background-color: #ffffff; border-bottom: 1px solid #e5e7eb; }
-        /* Стили для карточек меню */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color); /* Используем переменную для фона */
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .header-pattern {
+             background-color: var(--header-bg);
+             border-bottom: 1px solid var(--header-border);
+             transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
         .menu-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #e5e7eb; background-color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            border: 1px solid var(--card-border);
+            background-color: var(--card-bg);
             border-radius: 0.5rem; overflow: hidden;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
@@ -26,92 +100,121 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         .menu-card img { width: 100%; height: 12rem; object-fit: cover; }
-        /* Стили для сайдбара */
-        .sidebar { background-color: #ffffff; border-right: 1px solid #e5e7eb; }
+        .menu-card h3 { color: var(--text-color); }
+        .menu-card p:not(.font-bold) { color: var(--text-muted-color); } /* Используем приглушенный цвет */
+        .menu-card p.font-bold { color: var(--price-color); }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
         .sidebar a {
-            display: block; padding: 0.75rem 1rem; color: #374151;
+            display: block; padding: 0.75rem 1rem; color: var(--sidebar-link-color);
             text-decoration: none; border-radius: 0.375rem;
             transition: background-color 0.2s ease, color 0.2s ease;
             font-weight: 500; margin-bottom: 0.5rem;
         }
-        .sidebar a:hover { background-color: #f3f4f6; color: #111827; }
-        .sidebar a.active { background-color: #ef4444; color: #ffffff; font-weight: 600; }
-        /* Стили для выпадающего списка языков */
+        .sidebar a:hover { background-color: var(--sidebar-link-hover-bg); color: var(--sidebar-link-hover-color); }
+        .sidebar a.active { background-color: var(--sidebar-link-active-bg); color: var(--sidebar-link-active-color); font-weight: 600; }
+
         .lang-dropdown { position: relative; display: inline-block; }
         .lang-dropdown-content {
-            display: none; /* Скрыто по умолчанию */
-            position: absolute;
-            background-color: #ffffff;
+            display: none; position: absolute;
+            background-color: var(--dropdown-bg);
             min-width: 160px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            right: 0; /* Выравнивание по правому краю */
-            border-radius: 0.375rem; /* rounded-md */
-            border: 1px solid #e5e7eb;
+            z-index: 1; right: 0;
+            border-radius: 0.375rem;
+            border: 1px solid var(--dropdown-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         .lang-dropdown-content button {
-            color: #374151; /* Текст кнопок в списке */
-            padding: 10px 16px;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.875rem; /* text-sm */
+            color: var(--dropdown-item-text);
+            padding: 10px 16px; text-decoration: none; display: block;
+            width: 100%; text-align: left; background: none; border: none;
+            cursor: pointer; font-size: 0.875rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
-        .lang-dropdown-content button:hover { background-color: #f3f4f6; }
+        .lang-dropdown-content button:hover { background-color: var(--dropdown-item-hover-bg); }
         .lang-dropdown-content button.active {
-             background-color: #fee2e2; /* Светло-красный фон для активного языка в списке */
-             color: #dc2626; /* Красный текст */
+             background-color: var(--dropdown-item-active-bg);
+             color: var(--dropdown-item-active-text);
              font-weight: 600;
         }
-        /* Показать выпадающий список при активации */
         .lang-dropdown.active .lang-dropdown-content { display: block; }
-        /* Стиль основной кнопки выбора языка */
         #lang-dropdown-button {
-            background-color: #e5e7eb;
-            color: #374151;
-            padding: 0.5rem 1rem; /* Немного больше паддинг */
-            font-size: 0.875rem;
-            border: none;
-            cursor: pointer;
-            border-radius: 0.375rem;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s ease;
+            background-color: var(--button-bg); color: var(--button-text);
+            padding: 0.5rem 1rem; font-size: 0.875rem; border: none;
+            cursor: pointer; border-radius: 0.375rem; display: flex;
+            align-items: center; transition: background-color 0.3s ease, color 0.3s ease;
         }
-        #lang-dropdown-button:hover { background-color: #d1d5db; }
-        #lang-dropdown-button svg { margin-left: 0.5rem; /* Отступ для стрелки */ }
+        #lang-dropdown-button:hover { background-color: var(--button-hover-bg); }
+        #lang-dropdown-button svg { margin-left: 0.5rem; stroke: var(--button-text); }
 
-        /* Адаптивность: скрываем сайдбар на маленьких экранах */
+        #theme-toggle-button {
+            background-color: var(--button-bg); color: var(--button-text);
+            padding: 0.5rem;
+            font-size: 0.875rem; border: none;
+            cursor: pointer; border-radius: 0.375rem; display: flex;
+            align-items: center; justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 36px; height: 36px;
+        }
+         #theme-toggle-button:hover { background-color: var(--button-hover-bg); }
+         #theme-toggle-button svg { stroke: var(--button-text); }
+
+        main h2 {
+            color: var(--section-title-color);
+            border-bottom-color: var(--section-border-color);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* Стиль для дисклеймера в подвале */
+        .footer-disclaimer {
+            color: var(--footer-disclaimer-text);
+            font-size: 0.75rem; /* text-xs */
+            margin-top: 0.5rem; /* mt-2 */
+        }
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .main-content { width: 100%; padding-left: 1rem; }
-            /* Центрируем элементы шапки на мобильных */
             .header-container { flex-direction: column; align-items: center; }
-            .lang-dropdown { margin-top: 0.5rem; /* Отступ для кнопки языка на мобильных */ }
+            .header-controls { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body>
+    <header class="header-pattern shadow-md py-3 sticky top-0 z-20">
+        <div class="container mx-auto px-4 flex header-container justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-red-700 mb-2 md:mb-0 whitespace-nowrap" data-translate="restaurantName">Nasruddin Kebab</h1>
 
-    <header class="header-pattern shadow-md py-3 sticky top-0 z-20"> <div class="container mx-auto px-4 flex header-container justify-between items-center">
-            <h1 class="text-2xl md:text-3xl font-bold text-red-700 mb-2 md:mb-0 whitespace-nowrap" data-translate="restaurantName">Nastuddin Kebab</h1>
-
-            <div class="lang-dropdown" id="language-selector">
-                <button id="lang-dropdown-button">
-                    <span id="selected-lang-text">Русский</span> <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="lang-dropdown-content">
-                    <button onclick="selectLanguage('uz-Latn')" data-lang="uz-Latn">O'zbekcha (Lotin)</button>
-                    <button onclick="selectLanguage('tr')" data-lang="tr">Türkçe</button>
-                    <button onclick="selectLanguage('ru')" data-lang="ru" class="active">Русский</button>
-                    <button onclick="selectLanguage('en')" data-lang="en">English</button>
-                    <button onclick="selectLanguage('zh')" data-lang="zh">中文</button>
-                    <button onclick="selectLanguage('uz-Cyrl')" data-lang="uz-Cyrl">Ўзбекча (Кирилл)</button>
+            <div class="header-controls flex items-center gap-2">
+                <div class="lang-dropdown" id="language-selector">
+                    <button id="lang-dropdown-button">
+                        <span id="selected-lang-text">Русский</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="lang-dropdown-content">
+                        <button onclick="selectLanguage('uz-Latn')" data-lang="uz-Latn">O'zbekcha (Lotin)</button>
+                        <button onclick="selectLanguage('tr')" data-lang="tr">Türkçe</button>
+                        <button onclick="selectLanguage('ru')" data-lang="ru" class="active">Русский</button>
+                        <button onclick="selectLanguage('en')" data-lang="en">English</button>
+                        <button onclick="selectLanguage('zh')" data-lang="zh">中文</button>
+                        <button onclick="selectLanguage('uz-Cyrl')" data-lang="uz-Cyrl">Ўзбекча (Кирилл)</button>
+                    </div>
                 </div>
+
+                <button id="theme-toggle-button" aria-label="Toggle theme">
+                    <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="theme-icon-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
             </div>
         </div>
     </header>
@@ -129,170 +232,170 @@
         <main class="main-content flex-grow p-4 md:pl-8">
 
             <section id="breakfasts" class="mb-12 pt-16 -mt-16">
-                <h2 class="text-2xl font-semibold mb-6 border-b-2 border-red-600 pb-2 text-gray-800" data-translate="sectionBreakfasts">Завтраки</h2>
+                <h2 class="text-2xl font-semibold mb-6 border-b-2 pb-2" data-translate="sectionBreakfasts">Завтраки</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="menu-card">
-                        <img src="https://img.freepik.com/free-photo/sausage-rolls-on-a-cooling-rack_144627-17056.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1714867200&semt=ais" alt="[Image of Сосиска в тесте]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://main-cdn.sbermegamarket.ru/hlr-system/764/974/238/410/11/100030449718b0.png" alt="[Image of Сосиска в тесте]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemSosiska">Сосиска в тесте</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descSosiska">Аппетитная сосиска в нежном тесте.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceSosiska">15 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemSosiska">Сосиска в тесте</h3>
+                            <p class="text-sm mb-3" data-translate="descSosiska">Аппетитная сосиска в нежном тесте.</p>
+                            <p class="text-lg font-bold" data-translate="priceSosiska">15 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
                         <img src="https://media.istockphoto.com/id/1166223141/photo/traditional-turkish-breakfast.jpg?s=612x612&w=0&k=20&c=C4CmDT5r6-np_3_G9zASmMQYkDbwDx69qBkG09KNMo4=" alt="[Image of Завтрак по-турецки]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemTurkishBreakfast">Завтрак по-турецки</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descTurkishBreakfast">Сытный традиционный турецкий завтрак.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceTurkishBreakfast">45 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemTurkishBreakfast">Завтрак по-турецки</h3>
+                            <p class="text-sm mb-3" data-translate="descTurkishBreakfast">Сытный традиционный турецкий завтрак.</p>
+                            <p class="text-lg font-bold" data-translate="priceTurkishBreakfast">45 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1136971323/photo/crepes-with-berries-and-maple-syrup.jpg?s=612x612&w=0&k=20&c=m_B9UqGv_Gg7vGfJmFq_nhqXp6Jo7bVMyX9QJ7hYloA=" alt="[Image of Блинчики]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://avatars.mds.yandex.net/get-altay/5455550/2a00000182d09b5ec65b07431d4bc52dd063/XXL_height" alt="[Image of Блинчики]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBlinchiki">Блинчики</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descBlinchiki">Нежные блинчики со сметаной или вареньем.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceBlinchiki">25 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemBlinchiki">Блинчики</h3>
+                            <p class="text-sm mb-3" data-translate="descBlinchiki">Нежные блинчики со сметаной или вареньем.</p>
+                            <p class="text-lg font-bold" data-translate="priceBlinchiki">25 000 сум</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section id="hot-dishes" class="mb-12 pt-16 -mt-16">
-                <h2 class="text-2xl font-semibold mb-6 border-b-2 border-red-600 pb-2 text-gray-800" data-translate="sectionHotDishes">Горячие блюда</h2>
+                <h2 class="text-2xl font-semibold mb-6 border-b-2 pb-2" data-translate="sectionHotDishes">Горячие блюда</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                      <div class="menu-card">
-                        <img src="https://img.freepik.com/free-photo/lagman-uyghur-noodle-stir-fry-dish-of-central-asia_114579-4064.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1714867200&semt=ais" alt="[Image of Жареный лагман]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://avatars.mds.yandex.net/get-altay/988435/2a0000018b442a0893d1afcccc7de5d11a1c/XXL_height" alt="[Image of Жареный лагман]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemFriedLagman">Жареный лагман</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descFriedLagman">Обжаренная лапша с мясом и овощами.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceFriedLagman">35 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemFriedLagman">Жареный лагман</h3>
+                            <p class="text-sm mb-3" data-translate="descFriedLagman">Обжаренная лапша с мясом и овощами.</p>
+                            <p class="text-lg font-bold" data-translate="priceFriedLagman">35 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1203262458/photo/lagman-soup-with-lamb-homemade-noodles-and-vegetables.jpg?s=612x612&w=0&k=20&c=6i-g9W-q9h9k7_z-g7a9d9c9e8f8f7f6e5d4c3b2a1=" alt="[Image of Лагман (суп)]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                         <img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/-17/719/356/092/312/44/100063940981b0.jpg" alt="[Image of Лагман (суп)]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemLagmanSoup">Лагман (суп)</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descLagmanSoup">Густой суп с лапшой, мясом и овощами.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceLagmanSoup">30 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemLagmanSoup">Лагман (суп)</h3>
+                            <p class="text-sm mb-3" data-translate="descLagmanSoup">Густой суп с лапшой, мясом и овощами.</p>
+                            <p class="text-lg font-bold" data-translate="priceLagmanSoup">30 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/176800669/photo/steak-and-chips.jpg?s=612x612&w=0&k=20&c=8LqGzW55vSA8zS-5G0z_rTz8k4_a6b7c5d4e3f2a1=" alt="[Image of Бифштекс]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://dikoed.ru/upload/iblock/088/14387-bifshteks-iz-oleniny-s-yaytsom.jpg" alt="[Image of Бифштекс]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBeefsteak">Бифштекс</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descBeefsteak">Сочный бифштекс с гарниром.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceBeefsteak">55 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemBeefsteak">Бифштекс</h3>
+                            <p class="text-sm mb-3" data-translate="descBeefsteak">Сочный бифштекс с гарниром.</p>
+                            <p class="text-lg font-bold" data-translate="priceBeefsteak">55 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://img.povar.ru/main/86/1b/58/4a/kuza_shurpa-208317.jpg" alt="[Image of Куза шурва]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                         <img src="https://uzplov.com/sites/default/files/kuza_shurpa.jpg" alt="[Image of Куза шурва]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemKuzaShurva">Куза шурва</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descKuzaShurva">Наваристый суп в горшочке.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceKuzaShurva">40 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemKuzaShurva">Куза шурва</h3>
+                            <p class="text-sm mb-3" data-translate="descKuzaShurva">Наваристый суп в горшочке.</p>
+                            <p class="text-lg font-bold" data-translate="priceKuzaShurva">40 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1300078093/photo/homemade-beef-cutlets-and-mashed-potatoes.jpg?s=612x612&w=0&k=20&c=9_f7z8a7f6e5d4c3b2a1b0c9d8e7f6g5h4i3j2k1=" alt="[Image of Говяжьи котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://main-cdn.sbermegamarket.ru/big2/hlr-system/250/047/717/428/748/100051343053b0.jpg" alt="[Image of Говяжьи котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBeefCutlet">Говяжьи котлеты</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descBeefCutlet">Домашние котлеты из говядины.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceBeefCutlet">38 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemBeefCutlet">Говяжьи котлеты</h3>
+                            <p class="text-sm mb-3" data-translate="descBeefCutlet">Домашние котлеты из говядины.</p>
+                            <p class="text-lg font-bold" data-translate="priceBeefCutlet">38 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1203262458/photo/vegetable-cutlets-from-zucchini-carrot-herbs-in-white-plate.jpg?s=612x612&w=0&k=20&c=1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t=" alt="[Image of Овощные котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://main-cdn.sbermegamarket.ru/big2/hlr-system/490/493/458/451/212/100031004825b0.jpg" alt="[Image of Овощные котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemVegCutlet">Овощные котлеты</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descVegCutlet">Легкие котлеты из свежих овощей.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceVegCutlet">28 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemVegCutlet">Овощные котлеты</h3>
+                            <p class="text-sm mb-3" data-translate="descVegCutlet">Легкие котлеты из свежих овощей.</p>
+                            <p class="text-lg font-bold" data-translate="priceVegCutlet">28 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1180496180/photo/chicken-cutlets-with-dill-and-tartar-sauce.jpg?s=612x612&w=0&k=20&c=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0=" alt="[Image of Куриные котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://main-cdn.sbermegamarket.ru/big2/hlr-system/760/154/518/613/182/8/100055172214b0.jpg" alt="[Image of Куриные котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemChickenCutlet">Куриные котлеты</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descChickenCutlet">Нежные котлеты из куриного филе.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceChickenCutlet">35 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemChickenCutlet">Куриные котлеты</h3>
+                            <p class="text-sm mb-3" data-translate="descChickenCutlet">Нежные котлеты из куриного филе.</p>
+                            <p class="text-lg font-bold" data-translate="priceChickenCutlet">35 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1130896281/photo/homemade-hearty-beef-stroganoff.jpg?s=612x612&w=0&k=20&c=b1a2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u=" alt="[Image of Бифстроганов]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://avatars.mds.yandex.net/get-altay/1987173/2a0000018552782eaa00fe389e559c2d4856/XXL_height" alt="[Image of Бифстроганов]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBeefStroganoff">Бифстроганов</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descBeefStroganoff">Говядина в сливочном соусе.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceBeefStroganoff">50 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemBeefStroganoff">Бифстроганов</h3>
+                            <p class="text-sm mb-3" data-translate="descBeefStroganoff">Говядина в сливочном соусе.</p>
+                            <p class="text-lg font-bold" data-translate="priceBeefStroganoff">50 000 сум</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section id="bakery-fastfood" class="mb-12 pt-16 -mt-16">
-                <h2 class="text-2xl font-semibold mb-6 border-b-2 border-red-600 pb-2 text-gray-800" data-translate="sectionBakeryFastfood">Выпечка и Фастфуд</h2>
+                <h2 class="text-2xl font-semibold mb-6 border-b-2 pb-2" data-translate="sectionBakeryFastfood">Выпечка и Фастфуд</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1270300013/photo/samsa-or-samosas-with-meat-and-vegetables-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=0g6h5j4k3l2m1n0o9p8q7r6s5t4u3v2w1x=" alt="[Image of Самса]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://avatars.mds.yandex.net/i?id=0f98369553fc32605aae3ad12f86cd7b_l-4497653-images-thumbs&n=13" alt="[Image of Самса]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemSamsa">Самса</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descSamsa">Традиционная слоеная самса с мясом.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceSamsa">10 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemSamsa">Самса</h3>
+                            <p class="text-sm mb-3" data-translate="descSamsa">Традиционная слоеная самса с мясом.</p>
+                            <p class="text-lg font-bold" data-translate="priceSamsa">10 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/522198738/photo/hot-dog-with-ketchup-and-mustard.jpg?s=612x612&w=0&k=20&c=1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p=" alt="[Image of Хот-дог]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://static.tildacdn.com/tild3965-6333-4130-b363-356266396636/__.jpg" alt="[Image of Хот-дог]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemHotdog">Хот-дог</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descHotdog">Классический хот-дог с соусами.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceHotdog">20 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemHotdog">Хот-дог</h3>
+                            <p class="text-sm mb-3" data-translate="descHotdog">Классический хот-дог с соусами.</p>
+                            <p class="text-lg font-bold" data-translate="priceHotdog">20 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/182183061/photo/haggis-isolated-on-a-white-background.jpg?s=612x612&w=0&k=20&c=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v=" alt="[Image of Хагги]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://avatars.mds.yandex.net/i?id=cb0d1eff37aa4d3ffbbbca694c253f6d_l-5170213-images-thumbs&n=13" alt="[Image of Хагги]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemHaggis">Хагги</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descHaggis">Традиционное шотландское блюдо (уточните).</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceHaggis">48 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemHaggis">Хагги</h3>
+                            <p class="text-sm mb-3" data-translate="descHaggis">Традиционное шотландское блюдо (уточните).</p>
+                            <p class="text-lg font-bold" data-translate="priceHaggis">48 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1309352410/photo/cheeseburger-with-tomato-and-lettuce-on-wooden-board.jpg?s=612x612&w=0&k=20&c=p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f=" alt="[Image of Гамбургер]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://sun9-61.userapi.com/c852124/v852124613/9f78d/HdKCSZ6WWi4.jpg" alt="[Image of Гамбургер]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemHamburger">Гамбургер</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descHamburger">Сочный гамбургер с котлетой и овощами.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceHamburger">30 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemHamburger">Гамбургер</h3>
+                            <p class="text-sm mb-3" data-translate="descHamburger">Сочный гамбургер с котлетой и овощами.</p>
+                            <p class="text-lg font-bold" data-translate="priceHamburger">30 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1206323282/photo/juicy-american-cheeseburger-with-cheese-and-salad-close-up.jpg?s=612x612&w=0&k=20&c=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w=" alt="[Image of Чизбургер]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/974/057/713/916/05/100038842357b0.jpg" alt="[Image of Чизбургер]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemCheeseburger">Чизбургер</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descCheeseburger">Гамбургер с добавлением сыра.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceCheeseburger">32 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemCheeseburger">Чизбургер</h3>
+                            <p class="text-sm mb-3" data-translate="descCheeseburger">Гамбургер с добавлением сыра.</p>
+                            <p class="text-lg font-bold" data-translate="priceCheeseburger">32 000 сум</p>
                         </div>
                     </div>
                      <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1179199326/photo/grilled-cheese-sandwich.jpg?s=612x612&w=0&k=20&c=b1a2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x=" alt="[Image of Тост с сыром]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://static.tildacdn.com/tild3730-3139-4362-b065-613264363133/___.jpg" alt="[Image of Тост с сыром]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemCheeseToast">Тост с сыром</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descCheeseToast">Поджаренный хлеб с расплавленным сыром.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceCheeseToast">18 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemCheeseToast">Тост с сыром</h3>
+                            <p class="text-sm mb-3" data-translate="descCheeseToast">Поджаренный хлеб с расплавленным сыром.</p>
+                            <p class="text-lg font-bold" data-translate="priceCheeseToast">18 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1311043001/photo/turkish-kavurma-roasted-meat-on-toast.jpg?s=612x612&w=0&k=20&c=c1a2b3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y=" alt="[Image of Тост с кавурмой]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://vipechkaopt.ru/upload/shop_3/2/9/0/item_290/shop_items_catalog_image290.jpg" alt="[Image of Тост с кавурмой]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemKavurmaToast">Тост с кавурмой</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descKavurmaToast">Тост с традиционной тушеной бараниной.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceKavurmaToast">28 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemKavurmaToast">Тост с кавурмой</h3>
+                            <p class="text-sm mb-3" data-translate="descKavurmaToast">Тост с традиционной тушеной бараниной.</p>
+                            <p class="text-lg font-bold" data-translate="priceKavurmaToast">28 000 сум</p>
                         </div>
                     </div>
                     <div class="menu-card">
-                        <img src="https://media.istockphoto.com/id/1311043001/photo/french-fries-in-a-red-carton-box.jpg?s=612x612&w=0&k=20&c=d1a2b3c4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z=" alt="[Image of Картошка фри]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <img src="https://static-actual-production.chibbis.ru/7f94448f21168e869452d1a2669e3e90.jpeg" alt="[Image of Картошка фри]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
                         <div class="p-4">
-                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemFries">Картошка фри</h3>
-                            <p class="text-sm text-gray-600 mb-3" data-translate="descFries">Хрустящая жареная картошка.</p>
-                            <p class="text-lg font-bold text-red-700" data-translate="priceFries">15 000 сум</p>
+                            <h3 class="text-lg font-semibold mb-2" data-translate="itemFries">Картошка фри</h3>
+                            <p class="text-sm mb-3" data-translate="descFries">Хрустящая жареная картошка.</p>
+                            <p class="text-lg font-bold" data-translate="priceFries">15 000 сум</p>
                         </div>
                     </div>
                 </div>
@@ -303,21 +406,21 @@
 
     <footer class="bg-gray-800 text-white py-6 mt-12">
         <div class="container mx-auto px-4 text-center">
-            <p data-translate="footerText">&copy; 2025 Nastuddin Kebab. Все права защищены.</p>
+            <p data-translate="footerText">&copy; 2025 Nasruddin Kebab. Все права защищены.</p>
+            <p class="footer-disclaimer" data-translate="footerDisclaimer">Внешний вид блюд может отличаться от представленных на фотографиях.</p>
         </div>
     </footer>
 
     <script>
-        // Объект с переводами (дополненный + английский + исправления UZ)
+        // Объект с переводами (добавлен дисклеймер)
         const translations = {
-            'uz-Latn': { // Узбекский (латиница)
-                pageTitle: "Nastuddin Kebab Menyusi - Turk Uslubi",
-                restaurantName: "Nastuddin Kebab",
+            'uz-Latn': {
+                pageTitle: "Nasruddin Kebab Menyusi - Turk Uslubi", restaurantName: "Nasruddin Kebab",
                 navBreakfasts: "Nonushtalar", navHotDishes: "Issiq Taomlar", navBakeryFastfood: "Pishiriqlar va Fastfud",
                 sectionBreakfasts: "Nonushtalar", sectionHotDishes: "Issiq Taomlar", sectionBakeryFastfood: "Pishiriqlar va Fastfud",
-                itemSosiska: "Sosiskali bulochka", descSosiska: "Mazali sosiska yumshoq xamirda.", priceSosiska: "15 000 so'm", // ИЗМЕНЕНО
+                itemSosiska: "Sosiskali bulochka", descSosiska: "Mazali sosiska yumshoq xamirda.", priceSosiska: "15 000 so'm",
                 itemTurkishBreakfast: "Turkcha nonushta", descTurkishBreakfast: "To'yimli an'anaviy turkcha nonushta.", priceTurkishBreakfast: "45 000 so'm",
-                itemBlinchiki: "Blinchiklar", descBlinchiki: "Smetana yoki murabbo bilan nozik blinchiklar.", priceBlinchiki: "25 000 so'm", // ИЗМЕНЕНО
+                itemBlinchiki: "Blinchiklar", descBlinchiki: "Smetana yoki murabbo bilan nozik blinchiklar.", priceBlinchiki: "25 000 so'm",
                 itemFriedLagman: "Qovurilgan lag'mon", descFriedLagman: "Go'sht va sabzavotlar bilan qovurilgan lag'mon.", priceFriedLagman: "35 000 so'm",
                 itemLagmanSoup: "Lag'mon (sho'rva)", descLagmanSoup: "Lag'mon, go'sht va sabzavotlardan quyuq sho'rva.", priceLagmanSoup: "30 000 so'm",
                 itemBeefsteak: "Bifshteks", descBeefsteak: "Garnir bilan suvli bifshteks.", priceBeefsteak: "55 000 so'm",
@@ -334,11 +437,11 @@
                 itemCheeseToast: "Pishloqli tost", descCheeseToast: "Eritilgan pishloqli qovurilgan non.", priceCheeseToast: "18 000 so'm",
                 itemKavurmaToast: "Qovurdoqli tost", descKavurmaToast: "An'anaviy qovurdoq bilan tost.", priceKavurmaToast: "28 000 so'm",
                 itemFries: "Kartoshka fri", descFries: "Qirsildoq qovurilgan kartoshka.", priceFries: "15 000 so'm",
-                footerText: "&copy; 2025 Nastuddin Kebab. Barcha huquqlar himoyalangan."
+                footerText: "&copy; 2025 Nasruddin Kebab. Barcha huquqlar himoyalangan.",
+                footerDisclaimer: "Taomlarning ko'rinishi suratlardagidan farq qilishi mumkin." // Дисклеймер UZ Latin
             },
-            'tr': { // Турецкий
-                pageTitle: "Nastuddin Kebab Menüsü - Türk Tarzı",
-                restaurantName: "Nastuddin Kebab",
+            'tr': {
+                pageTitle: "Nasruddin Kebab Menüsü - Türk Tarzı", restaurantName: "Nasruddin Kebab",
                 navBreakfasts: "Kahvaltılar", navHotDishes: "Sıcak Yemekler", navBakeryFastfood: "Unlu Mamüller ve Fast Food",
                 sectionBreakfasts: "Kahvaltılar", sectionHotDishes: "Sıcak Yemekler", sectionBakeryFastfood: "Unlu Mamüller ve Fast Food",
                 itemSosiska: "Sosisli Milföy", descSosiska: "Yumuşak hamur içinde lezzetli sosis.", priceSosiska: "15 000 sum",
@@ -360,11 +463,11 @@
                 itemCheeseToast: "Peynirli Tost", descCheeseToast: "Eritilmiş peynirli kızarmış ekmek.", priceCheeseToast: "18 000 sum",
                 itemKavurmaToast: "Kavurmalı Tost", descKavurmaToast: "Geleneksel kavurmalı tost.", priceKavurmaToast: "28 000 sum",
                 itemFries: "Patates Kızartması", descFries: "Çıtır çıtır patates kızartması.", priceFries: "15 000 sum",
-                footerText: "&copy; 2025 Nastuddin Kebab. Tüm hakları saklıdır."
+                footerText: "&copy; 2025 Nasruddin Kebab. Tüm hakları saklıdır.",
+                footerDisclaimer: "Yemeklerin görünümü fotoğraflardakinden farklı olabilir." // Дисклеймер TR
             },
-            'ru': { // Русский
-                pageTitle: "Меню Nastuddin Kebab - Турецкий Стиль",
-                restaurantName: "Nastuddin Kebab",
+            'ru': {
+                pageTitle: "Меню Nasruddin Kebab - Турецкий Стиль", restaurantName: "Nasruddin Kebab",
                 navBreakfasts: "Завтраки", navHotDishes: "Горячие блюда", navBakeryFastfood: "Выпечка и Фастфуд",
                 sectionBreakfasts: "Завтраки", sectionHotDishes: "Горячие блюда", sectionBakeryFastfood: "Выпечка и Фастфуд",
                 itemSosiska: "Сосиска в тесте", descSosiska: "Аппетитная сосиска в нежном тесте.", priceSosiska: "15 000 сум",
@@ -386,11 +489,11 @@
                 itemCheeseToast: "Тост с сыром", descCheeseToast: "Поджаренный хлеб с расплавленным сыром.", priceCheeseToast: "18 000 сум",
                 itemKavurmaToast: "Тост с кавурмой", descKavurmaToast: "Тост с традиционной тушеной бараниной.", priceKavurmaToast: "28 000 сум",
                 itemFries: "Картошка фри", descFries: "Хрустящая жареная картошка.", priceFries: "15 000 сум",
-                footerText: "&copy; 2025 Nastuddin Kebab. Все права защищены."
+                footerText: "&copy; 2025 Nasruddin Kebab. Все права защищены.",
+                footerDisclaimer: "Внешний вид блюд может отличаться от представленных на фотографиях." // Дисклеймер RU
             },
-            'en': { // Английский (НОВЫЙ)
-                pageTitle: "Nastuddin Kebab Menu - Turkish Style",
-                restaurantName: "Nastuddin Kebab",
+            'en': {
+                pageTitle: "Nasruddin Kebab Menu - Turkish Style", restaurantName: "Nasruddin Kebab",
                 navBreakfasts: "Breakfasts", navHotDishes: "Hot Dishes", navBakeryFastfood: "Bakery & Fast Food",
                 sectionBreakfasts: "Breakfasts", sectionHotDishes: "Hot Dishes", sectionBakeryFastfood: "Bakery & Fast Food",
                 itemSosiska: "Sausage Roll", descSosiska: "Appetizing sausage in tender dough.", priceSosiska: "15 000 sum",
@@ -412,11 +515,11 @@
                 itemCheeseToast: "Cheese Toast", descCheeseToast: "Toasted bread with melted cheese.", priceCheeseToast: "18 000 sum",
                 itemKavurmaToast: "Kavurma Toast", descKavurmaToast: "Toast with traditional stewed lamb.", priceKavurmaToast: "28 000 sum",
                 itemFries: "French Fries", descFries: "Crispy fried potatoes.", priceFries: "15 000 sum",
-                footerText: "&copy; 2025 Nastuddin Kebab. All rights reserved."
+                footerText: "&copy; 2025 Nasruddin Kebab. All rights reserved.",
+                footerDisclaimer: "The appearance of the dishes may differ from the photos." // Дисклеймер EN
             },
-            'zh': { // Китайский
-                pageTitle: "Nastuddin Kebab 菜单 - 土耳其风格",
-                restaurantName: "Nastuddin Kebab",
+            'zh': {
+                pageTitle: "Nasruddin Kebab 菜单 - 土耳其风格", restaurantName: "Nasruddin Kebab",
                 navBreakfasts: "早餐", navHotDishes: "热菜", navBakeryFastfood: "烘焙与快餐",
                 sectionBreakfasts: "早餐", sectionHotDishes: "热菜", sectionBakeryFastfood: "烘焙与快餐",
                 itemSosiska: "香肠卷", descSosiska: "美味的香肠卷在嫩面团里。", priceSosiska: "15 000 苏姆",
@@ -438,16 +541,16 @@
                 itemCheeseToast: "奶酪吐司", descCheeseToast: "融化奶酪的烤面包。", priceCheeseToast: "18 000 苏姆",
                 itemKavurmaToast: "烤肉吐司", descKavurmaToast: "传统炖羊肉吐司。", priceKavurmaToast: "28 000 苏姆",
                 itemFries: "炸薯条", descFries: "香脆的炸薯条。", priceFries: "15 000 苏姆",
-                footerText: "&copy; 2025 Nastuddin Kebab. 版权所有."
+                footerText: "&copy; 2025 Nasruddin Kebab. 版权所有.",
+                footerDisclaimer: "菜肴外观可能与照片有所不同。" // Дисклеймер ZH
             },
-            'uz-Cyrl': { // Узбекский (кириллица)
-                pageTitle: "Nastuddin Kebab Менюси - Турк Услуби",
-                restaurantName: "Nastuddin Kebab",
+            'uz-Cyrl': {
+                pageTitle: "Nasruddin Kebab Менюси - Турк Услуби", restaurantName: "Nasruddin Kebab",
                 navBreakfasts: "Нонушталар", navHotDishes: "Иссиқ Таомлар", navBakeryFastfood: "Пишириқлар ва Фастфуд",
                 sectionBreakfasts: "Нонушталар", sectionHotDishes: "Иссиқ Таомлар", sectionBakeryFastfood: "Пишириқлар ва Фастфуд",
-                itemSosiska: "Сосискали булочка", descSosiska: "Мазали сосиска юмшоқ хамирда.", priceSosiska: "15 000 сўм", // ИЗМЕНЕНО
+                itemSosiska: "Сосискали булочка", descSosiska: "Мазали сосиска юмшоқ хамирда.", priceSosiska: "15 000 сўм",
                 itemTurkishBreakfast: "Туркча нонушта", descTurkishBreakfast: "Тўйимли анъанавий туркча нонушта.", priceTurkishBreakfast: "45 000 сўм",
-                itemBlinchiki: "Блинчиклар", descBlinchiki: "Сметана ёки мураббо билан нозик блинчиклар.", priceBlinchiki: "25 000 сўм", // ИЗМЕНЕНО
+                itemBlinchiki: "Блинчиклар", descBlinchiki: "Сметана ёки мураббо билан нозик блинчиклар.", priceBlinchiki: "25 000 сўм",
                 itemFriedLagman: "Қовурилган лағмон", descFriedLagman: "Гўшт ва сабзавотлар билан қовурилган лағмон.", priceFriedLagman: "35 000 сўм",
                 itemLagmanSoup: "Лағмон (шўрва)", descLagmanSoup: "Лағмон, гўшт ва сабзавотлардан қуюқ шўрва.", priceLagmanSoup: "30 000 сўм",
                 itemBeefsteak: "Бифштекс", descBeefsteak: "Гарнир билан сувли бифштекс.", priceBeefsteak: "55 000 сўм",
@@ -464,7 +567,8 @@
                 itemCheeseToast: "Пишлоқли тост", descCheeseToast: "Эритилган пишлоқли қовурилган нон.", priceCheeseToast: "18 000 сўм",
                 itemKavurmaToast: "Қовурдоқли тост", descKavurmaToast: "Анъанавий қовурдоқ билан тост.", priceKavurmaToast: "28 000 сўм",
                 itemFries: "Картошка фри", descFries: "Қирсилдоқ қовурилган картошка.", priceFries: "15 000 сўм",
-                footerText: "&copy; 2025 Nastuddin Kebab. Барча ҳуқуқлар ҳимояланган."
+                footerText: "&copy; 2025 Nasruddin Kebab. Барча ҳуқуқлар ҳимояланган.",
+                footerDisclaimer: "Таомларнинг кўриниши суратлардагидан фарқ қилиши мумкин." // Дисклеймер UZ Cyrillic
             }
         };
 
@@ -485,7 +589,6 @@
                 if (langTranslations[key]) {
                     element.innerHTML = langTranslations[key];
                 } else {
-                    // Если перевода нет, пытаемся взять из русского как запасной вариант
                     const fallbackKey = translations['ru'][key];
                     if (fallbackKey) {
                          element.innerHTML = fallbackKey;
@@ -516,7 +619,6 @@
         // Функция выбора языка из dropdown и закрытия списка
         function selectLanguage(lang) {
             changeLanguage(lang);
-            // Закрываем dropdown
             const dropdown = document.getElementById('language-selector');
             dropdown.classList.remove('active');
         }
@@ -525,11 +627,10 @@
         function updateActiveCategoryLink() {
             const sections = document.querySelectorAll('main section[id]');
             const navLinks = document.querySelectorAll('#category-nav a');
-            let currentSectionId = sections.length > 0 ? sections[0].getAttribute('id') : ''; // По умолчанию первая секция
+            let currentSectionId = sections.length > 0 ? sections[0].getAttribute('id') : '';
 
             sections.forEach(section => {
-                const sectionTop = section.offsetTop - 90; // Увеличил отступ для точности
-                 // Проверяем, видна ли секция (или ее верхняя часть)
+                const sectionTop = section.offsetTop - 90;
                 if (window.scrollY >= sectionTop) {
                     currentSectionId = section.getAttribute('id');
                 }
@@ -540,31 +641,63 @@
             });
         }
 
+        // Функция переключения темы
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const isDark = htmlElement.classList.toggle('dark');
+            htmlElement.classList.toggle('light', !isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        }
+
+        // Функция обновления иконки темы
+        function updateThemeIcon(isDark) {
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             const dropdownButton = document.getElementById('lang-dropdown-button');
             const dropdown = document.getElementById('language-selector');
-            const dropdownContent = dropdown.querySelector('.lang-dropdown-content');
+            const themeToggleButton = document.getElementById('theme-toggle-button');
 
-            // Устанавливаем язык по умолчанию
+            // --- Инициализация темы ---
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+
+            document.documentElement.classList.toggle('dark', isDark);
+            document.documentElement.classList.toggle('light', !isDark);
+            updateThemeIcon(isDark);
+
+            themeToggleButton.addEventListener('click', toggleTheme);
+            // --- Конец инициализации темы ---
+
+            // --- Инициализация языка ---
             changeLanguage(currentLang);
 
-            // Обработчик клика для открытия/закрытия dropdown
             dropdownButton.addEventListener('click', (event) => {
-                event.stopPropagation(); // Предотвращаем всплытие клика к document
+                event.stopPropagation();
                 dropdown.classList.toggle('active');
             });
 
-            // Закрытие dropdown при клике вне его
             document.addEventListener('click', (event) => {
                 if (!dropdown.contains(event.target)) {
                     dropdown.classList.remove('active');
                 }
             });
+            // --- Конец инициализации языка ---
 
-            // Слушатель прокрутки для обновления активной категории
             window.addEventListener('scroll', updateActiveCategoryLink);
-            updateActiveCategoryLink(); // Первоначальная установка
+            updateActiveCategoryLink();
         });
 
     </script>
