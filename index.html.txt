@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="pageTitle">Меню Nasruddin Kebab - Турецкий Стиль</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Базовые стили */
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        /* Стили для шапки */
+        .header-pattern { background-color: #ffffff; border-bottom: 1px solid #e5e7eb; }
+        /* Стили для карточек меню */
+        .menu-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb; background-color: white;
+            border-radius: 0.5rem; overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .menu-card img { width: 100%; height: 12rem; object-fit: cover; }
+        /* Стили для сайдбара */
+        .sidebar { background-color: #ffffff; border-right: 1px solid #e5e7eb; }
+        .sidebar a {
+            display: block; padding: 0.75rem 1rem; color: #374151;
+            text-decoration: none; border-radius: 0.375rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            font-weight: 500; margin-bottom: 0.5rem;
+        }
+        .sidebar a:hover { background-color: #f3f4f6; color: #111827; }
+        .sidebar a.active { background-color: #ef4444; color: #ffffff; font-weight: 600; }
+        /* Стили для выпадающего списка языков */
+        .lang-dropdown { position: relative; display: inline-block; }
+        .lang-dropdown-content {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0; /* Выравнивание по правому краю */
+            border-radius: 0.375rem; /* rounded-md */
+            border: 1px solid #e5e7eb;
+        }
+        .lang-dropdown-content button {
+            color: #374151; /* Текст кнопок в списке */
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem; /* text-sm */
+        }
+        .lang-dropdown-content button:hover { background-color: #f3f4f6; }
+        .lang-dropdown-content button.active {
+             background-color: #fee2e2; /* Светло-красный фон для активного языка в списке */
+             color: #dc2626; /* Красный текст */
+             font-weight: 600;
+        }
+        /* Показать выпадающий список при активации */
+        .lang-dropdown.active .lang-dropdown-content { display: block; }
+        /* Стиль основной кнопки выбора языка */
+        #lang-dropdown-button {
+            background-color: #e5e7eb;
+            color: #374151;
+            padding: 0.5rem 1rem; /* Немного больше паддинг */
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        #lang-dropdown-button:hover { background-color: #d1d5db; }
+        #lang-dropdown-button svg { margin-left: 0.5rem; /* Отступ для стрелки */ }
+
+        /* Адаптивность: скрываем сайдбар на маленьких экранах */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { width: 100%; padding-left: 1rem; }
+            /* Центрируем элементы шапки на мобильных */
+            .header-container { flex-direction: column; align-items: center; }
+            .lang-dropdown { margin-top: 0.5rem; /* Отступ для кнопки языка на мобильных */ }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <header class="header-pattern shadow-md py-3 sticky top-0 z-20"> <div class="container mx-auto px-4 flex header-container justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-red-700 mb-2 md:mb-0 whitespace-nowrap" data-translate="restaurantName">Nastuddin Kebab</h1>
+
+            <div class="lang-dropdown" id="language-selector">
+                <button id="lang-dropdown-button">
+                    <span id="selected-lang-text">Русский</span> <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="lang-dropdown-content">
+                    <button onclick="selectLanguage('uz-Latn')" data-lang="uz-Latn">O'zbekcha (Lotin)</button>
+                    <button onclick="selectLanguage('tr')" data-lang="tr">Türkçe</button>
+                    <button onclick="selectLanguage('ru')" data-lang="ru" class="active">Русский</button>
+                    <button onclick="selectLanguage('en')" data-lang="en">English</button>
+                    <button onclick="selectLanguage('zh')" data-lang="zh">中文</button>
+                    <button onclick="selectLanguage('uz-Cyrl')" data-lang="uz-Cyrl">Ўзбекча (Кирилл)</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto flex flex-row mt-4 px-2 md:px-4">
+
+        <aside class="sidebar w-64 flex-shrink-0 p-4 hidden md:block sticky top-[70px] h-[calc(100vh-80px)] overflow-y-auto z-10">
+            <nav id="category-nav">
+                <a href="#breakfasts" class="category-link" data-translate="navBreakfasts">Завтраки</a>
+                <a href="#hot-dishes" class="category-link" data-translate="navHotDishes">Горячие блюда</a>
+                <a href="#bakery-fastfood" class="category-link" data-translate="navBakeryFastfood">Выпечка и Фастфуд</a>
+            </nav>
+        </aside>
+
+        <main class="main-content flex-grow p-4 md:pl-8">
+
+            <section id="breakfasts" class="mb-12 pt-16 -mt-16">
+                <h2 class="text-2xl font-semibold mb-6 border-b-2 border-red-600 pb-2 text-gray-800" data-translate="sectionBreakfasts">Завтраки</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="menu-card">
+                        <img src="https://img.freepik.com/free-photo/sausage-rolls-on-a-cooling-rack_144627-17056.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1714867200&semt=ais" alt="[Image of Сосиска в тесте]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemSosiska">Сосиска в тесте</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descSosiska">Аппетитная сосиска в нежном тесте.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceSosiska">15 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1166223141/photo/traditional-turkish-breakfast.jpg?s=612x612&w=0&k=20&c=C4CmDT5r6-np_3_G9zASmMQYkDbwDx69qBkG09KNMo4=" alt="[Image of Завтрак по-турецки]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemTurkishBreakfast">Завтрак по-турецки</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descTurkishBreakfast">Сытный традиционный турецкий завтрак.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceTurkishBreakfast">45 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1136971323/photo/crepes-with-berries-and-maple-syrup.jpg?s=612x612&w=0&k=20&c=m_B9UqGv_Gg7vGfJmFq_nhqXp6Jo7bVMyX9QJ7hYloA=" alt="[Image of Блинчики]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBlinchiki">Блинчики</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descBlinchiki">Нежные блинчики со сметаной или вареньем.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceBlinchiki">25 000 сум</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="hot-dishes" class="mb-12 pt-16 -mt-16">
+                <h2 class="text-2xl font-semibold mb-6 border-b-2 border-red-600 pb-2 text-gray-800" data-translate="sectionHotDishes">Горячие блюда</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <div class="menu-card">
+                        <img src="https://img.freepik.com/free-photo/lagman-uyghur-noodle-stir-fry-dish-of-central-asia_114579-4064.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1714867200&semt=ais" alt="[Image of Жареный лагман]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemFriedLagman">Жареный лагман</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descFriedLagman">Обжаренная лапша с мясом и овощами.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceFriedLagman">35 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1203262458/photo/lagman-soup-with-lamb-homemade-noodles-and-vegetables.jpg?s=612x612&w=0&k=20&c=6i-g9W-q9h9k7_z-g7a9d9c9e8f8f7f6e5d4c3b2a1=" alt="[Image of Лагман (суп)]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemLagmanSoup">Лагман (суп)</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descLagmanSoup">Густой суп с лапшой, мясом и овощами.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceLagmanSoup">30 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/176800669/photo/steak-and-chips.jpg?s=612x612&w=0&k=20&c=8LqGzW55vSA8zS-5G0z_rTz8k4_a6b7c5d4e3f2a1=" alt="[Image of Бифштекс]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBeefsteak">Бифштекс</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descBeefsteak">Сочный бифштекс с гарниром.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceBeefsteak">55 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://img.povar.ru/main/86/1b/58/4a/kuza_shurpa-208317.jpg" alt="[Image of Куза шурва]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemKuzaShurva">Куза шурва</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descKuzaShurva">Наваристый суп в горшочке.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceKuzaShurva">40 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1300078093/photo/homemade-beef-cutlets-and-mashed-potatoes.jpg?s=612x612&w=0&k=20&c=9_f7z8a7f6e5d4c3b2a1b0c9d8e7f6g5h4i3j2k1=" alt="[Image of Говяжьи котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBeefCutlet">Говяжьи котлеты</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descBeefCutlet">Домашние котлеты из говядины.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceBeefCutlet">38 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1203262458/photo/vegetable-cutlets-from-zucchini-carrot-herbs-in-white-plate.jpg?s=612x612&w=0&k=20&c=1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t=" alt="[Image of Овощные котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemVegCutlet">Овощные котлеты</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descVegCutlet">Легкие котлеты из свежих овощей.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceVegCutlet">28 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1180496180/photo/chicken-cutlets-with-dill-and-tartar-sauce.jpg?s=612x612&w=0&k=20&c=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0=" alt="[Image of Куриные котлеты]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemChickenCutlet">Куриные котлеты</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descChickenCutlet">Нежные котлеты из куриного филе.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceChickenCutlet">35 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1130896281/photo/homemade-hearty-beef-stroganoff.jpg?s=612x612&w=0&k=20&c=b1a2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u=" alt="[Image of Бифстроганов]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemBeefStroganoff">Бифстроганов</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descBeefStroganoff">Говядина в сливочном соусе.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceBeefStroganoff">50 000 сум</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bakery-fastfood" class="mb-12 pt-16 -mt-16">
+                <h2 class="text-2xl font-semibold mb-6 border-b-2 border-red-600 pb-2 text-gray-800" data-translate="sectionBakeryFastfood">Выпечка и Фастфуд</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1270300013/photo/samsa-or-samosas-with-meat-and-vegetables-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=0g6h5j4k3l2m1n0o9p8q7r6s5t4u3v2w1x=" alt="[Image of Самса]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemSamsa">Самса</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descSamsa">Традиционная слоеная самса с мясом.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceSamsa">10 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/522198738/photo/hot-dog-with-ketchup-and-mustard.jpg?s=612x612&w=0&k=20&c=1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p=" alt="[Image of Хот-дог]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemHotdog">Хот-дог</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descHotdog">Классический хот-дог с соусами.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceHotdog">20 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/182183061/photo/haggis-isolated-on-a-white-background.jpg?s=612x612&w=0&k=20&c=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v=" alt="[Image of Хагги]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemHaggis">Хагги</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descHaggis">Традиционное шотландское блюдо (уточните).</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceHaggis">48 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1309352410/photo/cheeseburger-with-tomato-and-lettuce-on-wooden-board.jpg?s=612x612&w=0&k=20&c=p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f=" alt="[Image of Гамбургер]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemHamburger">Гамбургер</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descHamburger">Сочный гамбургер с котлетой и овощами.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceHamburger">30 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1206323282/photo/juicy-american-cheeseburger-with-cheese-and-salad-close-up.jpg?s=612x612&w=0&k=20&c=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w=" alt="[Image of Чизбургер]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemCheeseburger">Чизбургер</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descCheeseburger">Гамбургер с добавлением сыра.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceCheeseburger">32 000 сум</p>
+                        </div>
+                    </div>
+                     <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1179199326/photo/grilled-cheese-sandwich.jpg?s=612x612&w=0&k=20&c=b1a2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x=" alt="[Image of Тост с сыром]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemCheeseToast">Тост с сыром</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descCheeseToast">Поджаренный хлеб с расплавленным сыром.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceCheeseToast">18 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1311043001/photo/turkish-kavurma-roasted-meat-on-toast.jpg?s=612x612&w=0&k=20&c=c1a2b3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y=" alt="[Image of Тост с кавурмой]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemKavurmaToast">Тост с кавурмой</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descKavurmaToast">Тост с традиционной тушеной бараниной.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceKavurmaToast">28 000 сум</p>
+                        </div>
+                    </div>
+                    <div class="menu-card">
+                        <img src="https://media.istockphoto.com/id/1311043001/photo/french-fries-in-a-red-carton-box.jpg?s=612x612&w=0&k=20&c=d1a2b3c4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z=" alt="[Image of Картошка фри]" onerror="this.src='https://placehold.co/600x400/cccccc/333333?text=Image+Not+Found'">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900" data-translate="itemFries">Картошка фри</h3>
+                            <p class="text-sm text-gray-600 mb-3" data-translate="descFries">Хрустящая жареная картошка.</p>
+                            <p class="text-lg font-bold text-red-700" data-translate="priceFries">15 000 сум</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p data-translate="footerText">&copy; 2025 Nastuddin Kebab. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Объект с переводами (дополненный + английский + исправления UZ)
+        const translations = {
+            'uz-Latn': { // Узбекский (латиница)
+                pageTitle: "Nastuddin Kebab Menyusi - Turk Uslubi",
+                restaurantName: "Nastuddin Kebab",
+                navBreakfasts: "Nonushtalar", navHotDishes: "Issiq Taomlar", navBakeryFastfood: "Pishiriqlar va Fastfud",
+                sectionBreakfasts: "Nonushtalar", sectionHotDishes: "Issiq Taomlar", sectionBakeryFastfood: "Pishiriqlar va Fastfud",
+                itemSosiska: "Sosiskali bulochka", descSosiska: "Mazali sosiska yumshoq xamirda.", priceSosiska: "15 000 so'm", // ИЗМЕНЕНО
+                itemTurkishBreakfast: "Turkcha nonushta", descTurkishBreakfast: "To'yimli an'anaviy turkcha nonushta.", priceTurkishBreakfast: "45 000 so'm",
+                itemBlinchiki: "Blinchiklar", descBlinchiki: "Smetana yoki murabbo bilan nozik blinchiklar.", priceBlinchiki: "25 000 so'm", // ИЗМЕНЕНО
+                itemFriedLagman: "Qovurilgan lag'mon", descFriedLagman: "Go'sht va sabzavotlar bilan qovurilgan lag'mon.", priceFriedLagman: "35 000 so'm",
+                itemLagmanSoup: "Lag'mon (sho'rva)", descLagmanSoup: "Lag'mon, go'sht va sabzavotlardan quyuq sho'rva.", priceLagmanSoup: "30 000 so'm",
+                itemBeefsteak: "Bifshteks", descBeefsteak: "Garnir bilan suvli bifshteks.", priceBeefsteak: "55 000 so'm",
+                itemKuzaShurva: "Ko'za sho'rva", descKuzaShurva: "Ko'zachada pishirilgan to'yimli sho'rva.", priceKuzaShurva: "40 000 so'm",
+                itemBeefCutlet: "Mol go'shtli kotletlar", descBeefCutlet: "Uyda tayyorlangan mol go'shtli kotletlar.", priceBeefCutlet: "38 000 so'm",
+                itemVegCutlet: "Sabzavotli kotletlar", descVegCutlet: "Yangi sabzavotlardan yengil kotletlar.", priceVegCutlet: "28 000 so'm",
+                itemChickenCutlet: "Tovuq kotletlari", descChickenCutlet: "Tovuq filesidan nozik kotletlar.", priceChickenCutlet: "35 000 so'm",
+                itemBeefStroganoff: "Befstroganov", descBeefStroganoff: "Qaymoqli sousdagi mol go'shti.", priceBeefStroganoff: "50 000 so'm",
+                itemSamsa: "Somsa", descSamsa: "Go'shtli an'anaviy qatlama somsa.", priceSamsa: "10 000 so'm",
+                itemHotdog: "Xot-dog", descHotdog: "Souslar bilan klassik xot-dog.", priceHotdog: "20 000 so'm",
+                itemHaggis: "Xaggi", descHaggis: "An'anaviy shotland taomi (aniqlashtiring).", priceHaggis: "48 000 so'm",
+                itemHamburger: "Gamburger", descHamburger: "Kotlet va sabzavotlar bilan suvli gamburger.", priceHamburger: "30 000 so'm",
+                itemCheeseburger: "Chizburger", descCheeseburger: "Pishloq qo'shilgan gamburger.", priceCheeseburger: "32 000 so'm",
+                itemCheeseToast: "Pishloqli tost", descCheeseToast: "Eritilgan pishloqli qovurilgan non.", priceCheeseToast: "18 000 so'm",
+                itemKavurmaToast: "Qovurdoqli tost", descKavurmaToast: "An'anaviy qovurdoq bilan tost.", priceKavurmaToast: "28 000 so'm",
+                itemFries: "Kartoshka fri", descFries: "Qirsildoq qovurilgan kartoshka.", priceFries: "15 000 so'm",
+                footerText: "&copy; 2025 Nastuddin Kebab. Barcha huquqlar himoyalangan."
+            },
+            'tr': { // Турецкий
+                pageTitle: "Nastuddin Kebab Menüsü - Türk Tarzı",
+                restaurantName: "Nastuddin Kebab",
+                navBreakfasts: "Kahvaltılar", navHotDishes: "Sıcak Yemekler", navBakeryFastfood: "Unlu Mamüller ve Fast Food",
+                sectionBreakfasts: "Kahvaltılar", sectionHotDishes: "Sıcak Yemekler", sectionBakeryFastfood: "Unlu Mamüller ve Fast Food",
+                itemSosiska: "Sosisli Milföy", descSosiska: "Yumuşak hamur içinde lezzetli sosis.", priceSosiska: "15 000 sum",
+                itemTurkishBreakfast: "Türk Kahvaltısı", descTurkishBreakfast: "Doyurucu geleneksel Türk kahvaltısı.", priceTurkishBreakfast: "45 000 sum",
+                itemBlinchiki: "Krep", descBlinchiki: "Krema veya reçel ile ince krepler.", priceBlinchiki: "25 000 sum",
+                itemFriedLagman: "Kızarmış Lagman", descFriedLagman: "Et ve sebzelerle kızartılmış erişte.", priceFriedLagman: "35 000 sum",
+                itemLagmanSoup: "Lagman Çorbası", descLagmanSoup: "Erişte, et ve sebzelerle yoğun çorba.", priceLagmanSoup: "30 000 sum",
+                itemBeefsteak: "Biftek", descBeefsteak: "Garnitürlü sulu biftek.", priceBeefsteak: "55 000 sum",
+                itemKuzaShurva: "Güveçte Şorba", descKuzaShurva: "Güveçte doyurucu çorba.", priceKuzaShurva: "40 000 sum",
+                itemBeefCutlet: "Dana Köfte", descBeefCutlet: "Ev yapımı dana köftesi.", priceBeefCutlet: "38 000 sum",
+                itemVegCutlet: "Sebze Köftesi", descVegCutlet: "Taze sebzelerden hafif köfteler.", priceVegCutlet: "28 000 sum",
+                itemChickenCutlet: "Tavuk Köftesi", descChickenCutlet: "Tavuk filetodan yumuşak köfteler.", priceChickenCutlet: "35 000 sum",
+                itemBeefStroganoff: "Beef Stroganoff", descBeefStroganoff: "Kremalı soslu dana eti.", priceBeefStroganoff: "50 000 sum",
+                itemSamsa: "Samsa", descSamsa: "Etli geleneksel katmerli samsa.", priceSamsa: "10 000 sum",
+                itemHotdog: "Sosisli Sandviç", descHotdog: "Soslu klasik sosisli sandviç.", priceHotdog: "20 000 sum",
+                itemHaggis: "Haggis", descHaggis: "Geleneksel İskoç yemeği (açıklığa kavuşturun).", priceHaggis: "48 000 sum",
+                itemHamburger: "Hamburger", descHamburger: "Köfte ve sebzeli sulu hamburger.", priceHamburger: "30 000 sum",
+                itemCheeseburger: "Cheeseburger", descCheeseburger: "Peynir eklenmiş hamburger.", priceCheeseburger: "32 000 sum",
+                itemCheeseToast: "Peynirli Tost", descCheeseToast: "Eritilmiş peynirli kızarmış ekmek.", priceCheeseToast: "18 000 sum",
+                itemKavurmaToast: "Kavurmalı Tost", descKavurmaToast: "Geleneksel kavurmalı tost.", priceKavurmaToast: "28 000 sum",
+                itemFries: "Patates Kızartması", descFries: "Çıtır çıtır patates kızartması.", priceFries: "15 000 sum",
+                footerText: "&copy; 2025 Nastuddin Kebab. Tüm hakları saklıdır."
+            },
+            'ru': { // Русский
+                pageTitle: "Меню Nastuddin Kebab - Турецкий Стиль",
+                restaurantName: "Nastuddin Kebab",
+                navBreakfasts: "Завтраки", navHotDishes: "Горячие блюда", navBakeryFastfood: "Выпечка и Фастфуд",
+                sectionBreakfasts: "Завтраки", sectionHotDishes: "Горячие блюда", sectionBakeryFastfood: "Выпечка и Фастфуд",
+                itemSosiska: "Сосиска в тесте", descSosiska: "Аппетитная сосиска в нежном тесте.", priceSosiska: "15 000 сум",
+                itemTurkishBreakfast: "Завтрак по-турецки", descTurkishBreakfast: "Сытный традиционный турецкий завтрак.", priceTurkishBreakfast: "45 000 сум",
+                itemBlinchiki: "Блинчики", descBlinchiki: "Нежные блинчики со сметаной или вареньем.", priceBlinchiki: "25 000 сум",
+                itemFriedLagman: "Жареный лагман", descFriedLagman: "Обжаренная лапша с мясом и овощами.", priceFriedLagman: "35 000 сум",
+                itemLagmanSoup: "Лагман (суп)", descLagmanSoup: "Густой суп с лапшой, мясом и овощами.", priceLagmanSoup: "30 000 сум",
+                itemBeefsteak: "Бифштекс", descBeefsteak: "Сочный бифштекс с гарниром.", priceBeefsteak: "55 000 сум",
+                itemKuzaShurva: "Куза шурва", descKuzaShurva: "Наваристый суп в горшочке.", priceKuzaShurva: "40 000 сум",
+                itemBeefCutlet: "Говяжьи котлеты", descBeefCutlet: "Домашние котлеты из говядины.", priceBeefCutlet: "38 000 сум",
+                itemVegCutlet: "Овощные котлеты", descVegCutlet: "Легкие котлеты из свежих овощей.", priceVegCutlet: "28 000 сум",
+                itemChickenCutlet: "Куриные котлеты", descChickenCutlet: "Нежные котлеты из куриного филе.", priceChickenCutlet: "35 000 сум",
+                itemBeefStroganoff: "Бифстроганов", descBeefStroganoff: "Говядина в сливочном соусе.", priceBeefStroganoff: "50 000 сум",
+                itemSamsa: "Самса", descSamsa: "Традиционная слоеная самса с мясом.", priceSamsa: "10 000 сум",
+                itemHotdog: "Хот-дог", descHotdog: "Классический хот-дог с соусами.", priceHotdog: "20 000 сум",
+                itemHaggis: "Хагги", descHaggis: "Традиционное шотландское блюдо (уточните).", priceHaggis: "48 000 сум",
+                itemHamburger: "Гамбургер", descHamburger: "Сочный гамбургер с котлетой и овощами.", priceHamburger: "30 000 сум",
+                itemCheeseburger: "Чизбургер", descCheeseburger: "Гамбургер с добавлением сыра.", priceCheeseburger: "32 000 сум",
+                itemCheeseToast: "Тост с сыром", descCheeseToast: "Поджаренный хлеб с расплавленным сыром.", priceCheeseToast: "18 000 сум",
+                itemKavurmaToast: "Тост с кавурмой", descKavurmaToast: "Тост с традиционной тушеной бараниной.", priceKavurmaToast: "28 000 сум",
+                itemFries: "Картошка фри", descFries: "Хрустящая жареная картошка.", priceFries: "15 000 сум",
+                footerText: "&copy; 2025 Nastuddin Kebab. Все права защищены."
+            },
+            'en': { // Английский (НОВЫЙ)
+                pageTitle: "Nastuddin Kebab Menu - Turkish Style",
+                restaurantName: "Nastuddin Kebab",
+                navBreakfasts: "Breakfasts", navHotDishes: "Hot Dishes", navBakeryFastfood: "Bakery & Fast Food",
+                sectionBreakfasts: "Breakfasts", sectionHotDishes: "Hot Dishes", sectionBakeryFastfood: "Bakery & Fast Food",
+                itemSosiska: "Sausage Roll", descSosiska: "Appetizing sausage in tender dough.", priceSosiska: "15 000 sum",
+                itemTurkishBreakfast: "Turkish Breakfast", descTurkishBreakfast: "Hearty traditional Turkish breakfast.", priceTurkishBreakfast: "45 000 sum",
+                itemBlinchiki: "Pancakes", descBlinchiki: "Tender pancakes with sour cream or jam.", priceBlinchiki: "25 000 sum",
+                itemFriedLagman: "Fried Lagman", descFriedLagman: "Fried noodles with meat and vegetables.", priceFriedLagman: "35 000 sum",
+                itemLagmanSoup: "Lagman Soup", descLagmanSoup: "Thick soup with noodles, meat, and vegetables.", priceLagmanSoup: "30 000 sum",
+                itemBeefsteak: "Beefsteak", descBeefsteak: "Juicy beefsteak with a side dish.", priceBeefsteak: "55 000 sum",
+                itemKuzaShurva: "Kuza Shurva", descKuzaShurva: "Rich soup cooked in a pot.", priceKuzaShurva: "40 000 sum",
+                itemBeefCutlet: "Beef Cutlets", descBeefCutlet: "Homemade beef cutlets.", priceBeefCutlet: "38 000 sum",
+                itemVegCutlet: "Vegetable Cutlets", descVegCutlet: "Light cutlets made from fresh vegetables.", priceVegCutlet: "28 000 sum",
+                itemChickenCutlet: "Chicken Cutlets", descChickenCutlet: "Tender chicken fillet cutlets.", priceChickenCutlet: "35 000 sum",
+                itemBeefStroganoff: "Beef Stroganoff", descBeefStroganoff: "Beef in a creamy sauce.", priceBeefStroganoff: "50 000 sum",
+                itemSamsa: "Samsa", descSamsa: "Traditional layered samsa with meat.", priceSamsa: "10 000 sum",
+                itemHotdog: "Hot Dog", descHotdog: "Classic hot dog with sauces.", priceHotdog: "20 000 sum",
+                itemHaggis: "Haggis", descHaggis: "Traditional Scottish dish (please specify).", priceHaggis: "48 000 sum",
+                itemHamburger: "Hamburger", descHamburger: "Juicy hamburger with patty and vegetables.", priceHamburger: "30 000 sum",
+                itemCheeseburger: "Cheeseburger", descCheeseburger: "Hamburger with added cheese.", priceCheeseburger: "32 000 sum",
+                itemCheeseToast: "Cheese Toast", descCheeseToast: "Toasted bread with melted cheese.", priceCheeseToast: "18 000 sum",
+                itemKavurmaToast: "Kavurma Toast", descKavurmaToast: "Toast with traditional stewed lamb.", priceKavurmaToast: "28 000 sum",
+                itemFries: "French Fries", descFries: "Crispy fried potatoes.", priceFries: "15 000 sum",
+                footerText: "&copy; 2025 Nastuddin Kebab. All rights reserved."
+            },
+            'zh': { // Китайский
+                pageTitle: "Nastuddin Kebab 菜单 - 土耳其风格",
+                restaurantName: "Nastuddin Kebab",
+                navBreakfasts: "早餐", navHotDishes: "热菜", navBakeryFastfood: "烘焙与快餐",
+                sectionBreakfasts: "早餐", sectionHotDishes: "热菜", sectionBakeryFastfood: "烘焙与快餐",
+                itemSosiska: "香肠卷", descSosiska: "美味的香肠卷在嫩面团里。", priceSosiska: "15 000 苏姆",
+                itemTurkishBreakfast: "土耳其式早餐", descTurkishBreakfast: "丰盛的传统土耳其早餐。", priceTurkishBreakfast: "45 000 苏姆",
+                itemBlinchiki: "薄饼", descBlinchiki: "配酸奶油或果酱的嫩薄饼。", priceBlinchiki: "25 000 苏姆",
+                itemFriedLagman: "炒拉面", descFriedLagman: "肉和蔬菜炒面。", priceFriedLagman: "35 000 苏姆",
+                itemLagmanSoup: "拉面汤", descLagmanSoup: "面条、肉和蔬菜浓汤。", priceLagmanSoup: "30 000 苏姆",
+                itemBeefsteak: "牛排", descBeefsteak: "多汁的牛排配配菜。", priceBeefsteak: "55 000 苏姆",
+                itemKuzaShurva: "罐焖肉汤", descKuzaShurva: "罐装浓汤。", priceKuzaShurva: "40 000 苏姆",
+                itemBeefCutlet: "牛肉饼", descBeefCutlet: "家常牛肉饼。", priceBeefCutlet: "38 000 苏姆",
+                itemVegCutlet: "蔬菜饼", descVegCutlet: "新鲜蔬菜制成的轻食饼。", priceVegCutlet: "28 000 苏姆",
+                itemChickenCutlet: "鸡肉饼", descChickenCutlet: "嫩鸡柳制成的肉饼。", priceChickenCutlet: "35 000 苏姆",
+                itemBeefStroganoff: "俄式牛柳丝", descBeefStroganoff: "奶油酱牛肉。", priceBeefStroganoff: "50 000 苏姆",
+                itemSamsa: "萨姆萨烤包", descSamsa: "传统的肉馅千层萨姆萨。", priceSamsa: "10 000 苏姆",
+                itemHotdog: "热狗", descHotdog: "经典的酱汁热狗。", priceHotdog: "20 000 苏姆",
+                itemHaggis: "哈吉斯", descHaggis: "传统的苏格兰菜（请确认）。", priceHaggis: "48 000 苏姆",
+                itemHamburger: "汉堡包", descHamburger: "多汁的肉饼和蔬菜汉堡。", priceHamburger: "30 000 苏姆",
+                itemCheeseburger: "芝士汉堡", descCheeseburger: "加了奶酪的汉堡包。", priceCheeseburger: "32 000 苏姆",
+                itemCheeseToast: "奶酪吐司", descCheeseToast: "融化奶酪的烤面包。", priceCheeseToast: "18 000 苏姆",
+                itemKavurmaToast: "烤肉吐司", descKavurmaToast: "传统炖羊肉吐司。", priceKavurmaToast: "28 000 苏姆",
+                itemFries: "炸薯条", descFries: "香脆的炸薯条。", priceFries: "15 000 苏姆",
+                footerText: "&copy; 2025 Nastuddin Kebab. 版权所有."
+            },
+            'uz-Cyrl': { // Узбекский (кириллица)
+                pageTitle: "Nastuddin Kebab Менюси - Турк Услуби",
+                restaurantName: "Nastuddin Kebab",
+                navBreakfasts: "Нонушталар", navHotDishes: "Иссиқ Таомлар", navBakeryFastfood: "Пишириқлар ва Фастфуд",
+                sectionBreakfasts: "Нонушталар", sectionHotDishes: "Иссиқ Таомлар", sectionBakeryFastfood: "Пишириқлар ва Фастфуд",
+                itemSosiska: "Сосискали булочка", descSosiska: "Мазали сосиска юмшоқ хамирда.", priceSosiska: "15 000 сўм", // ИЗМЕНЕНО
+                itemTurkishBreakfast: "Туркча нонушта", descTurkishBreakfast: "Тўйимли анъанавий туркча нонушта.", priceTurkishBreakfast: "45 000 сўм",
+                itemBlinchiki: "Блинчиклар", descBlinchiki: "Сметана ёки мураббо билан нозик блинчиклар.", priceBlinchiki: "25 000 сўм", // ИЗМЕНЕНО
+                itemFriedLagman: "Қовурилган лағмон", descFriedLagman: "Гўшт ва сабзавотлар билан қовурилган лағмон.", priceFriedLagman: "35 000 сўм",
+                itemLagmanSoup: "Лағмон (шўрва)", descLagmanSoup: "Лағмон, гўшт ва сабзавотлардан қуюқ шўрва.", priceLagmanSoup: "30 000 сўм",
+                itemBeefsteak: "Бифштекс", descBeefsteak: "Гарнир билан сувли бифштекс.", priceBeefsteak: "55 000 сўм",
+                itemKuzaShurva: "Кўза шўрва", descKuzaShurva: "Кўзачада пиширилган тўйимли шўрва.", priceKuzaShurva: "40 000 сўм",
+                itemBeefCutlet: "Мол гўштли котлетлар", descBeefCutlet: "Уйда тайёрланган мол гўштли котлетлар.", priceBeefCutlet: "38 000 сўм",
+                itemVegCutlet: "Сабзавотли котлетлар", descVegCutlet: "Янги сабзавотлардан енгил котлетлар.", priceVegCutlet: "28 000 сўм",
+                itemChickenCutlet: "Товуқ котлетлари", descChickenCutlet: "Товуқ филесидан нозик котлетлар.", priceChickenCutlet: "35 000 сўм",
+                itemBeefStroganoff: "Бефстроганов", descBeefStroganoff: "Қаймоқли соусдаги мол гўшти.", priceBeefStroganoff: "50 000 сўм",
+                itemSamsa: "Сомса", descSamsa: "Гўштли анъанавий қатлама сомса.", priceSamsa: "10 000 сўм",
+                itemHotdog: "Хот-дог", descHotdog: "Соуслар билан классик хот-дог.", priceHotdog: "20 000 сўм",
+                itemHaggis: "Хагги", descHaggis: "Анъанавий шотланд таоми (аниқлаштиринг).", priceHaggis: "48 000 сўм",
+                itemHamburger: "Гамбургер", descHamburger: "Котлет ва сабзавотлар билан сувли гамбургер.", priceHamburger: "30 000 сўм",
+                itemCheeseburger: "Чизбургер", descCheeseburger: "Пишлоқ қўшилган гамбургер.", priceCheeseburger: "32 000 сўм",
+                itemCheeseToast: "Пишлоқли тост", descCheeseToast: "Эритилган пишлоқли қовурилган нон.", priceCheeseToast: "18 000 сўм",
+                itemKavurmaToast: "Қовурдоқли тост", descKavurmaToast: "Анъанавий қовурдоқ билан тост.", priceKavurmaToast: "28 000 сўм",
+                itemFries: "Картошка фри", descFries: "Қирсилдоқ қовурилган картошка.", priceFries: "15 000 сўм",
+                footerText: "&copy; 2025 Nastuddin Kebab. Барча ҳуқуқлар ҳимояланган."
+            }
+        };
+
+        let currentLang = 'ru'; // Язык по умолчанию
+
+        // Функция смены языка
+        function changeLanguage(lang) {
+            const langTranslations = translations[lang];
+            if (!langTranslations) {
+                console.error("Переводы для языка '" + lang + "' не найдены.");
+                return;
+            }
+            currentLang = lang; // Обновляем текущий язык
+
+            // Переводим все элементы
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (langTranslations[key]) {
+                    element.innerHTML = langTranslations[key];
+                } else {
+                    // Если перевода нет, пытаемся взять из русского как запасной вариант
+                    const fallbackKey = translations['ru'][key];
+                    if (fallbackKey) {
+                         element.innerHTML = fallbackKey;
+                    } else {
+                        console.warn(`Ключ перевода '${key}' не найден для языка '${lang}' и в русском.`);
+                    }
+                }
+            });
+
+            // Обновляем язык документа
+            document.documentElement.lang = lang;
+
+            // Обновляем текст на кнопке dropdown
+            const selectedLangButton = document.querySelector(`.lang-dropdown-content button[data-lang="${lang}"]`);
+            if (selectedLangButton) {
+                document.getElementById('selected-lang-text').textContent = selectedLangButton.textContent;
+            }
+
+            // Обновляем активную кнопку в выпадающем списке
+            document.querySelectorAll('.lang-dropdown-content button').forEach(button => {
+                button.classList.toggle('active', button.getAttribute('data-lang') === lang);
+            });
+
+            // Обновляем активную ссылку в сайдбаре
+            updateActiveCategoryLink();
+        }
+
+        // Функция выбора языка из dropdown и закрытия списка
+        function selectLanguage(lang) {
+            changeLanguage(lang);
+            // Закрываем dropdown
+            const dropdown = document.getElementById('language-selector');
+            dropdown.classList.remove('active');
+        }
+
+        // Функция для обновления активной категории в сайдбаре
+        function updateActiveCategoryLink() {
+            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('#category-nav a');
+            let currentSectionId = sections.length > 0 ? sections[0].getAttribute('id') : ''; // По умолчанию первая секция
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 90; // Увеличил отступ для точности
+                 // Проверяем, видна ли секция (или ее верхняя часть)
+                if (window.scrollY >= sectionTop) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${currentSectionId}`);
+            });
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownButton = document.getElementById('lang-dropdown-button');
+            const dropdown = document.getElementById('language-selector');
+            const dropdownContent = dropdown.querySelector('.lang-dropdown-content');
+
+            // Устанавливаем язык по умолчанию
+            changeLanguage(currentLang);
+
+            // Обработчик клика для открытия/закрытия dropdown
+            dropdownButton.addEventListener('click', (event) => {
+                event.stopPropagation(); // Предотвращаем всплытие клика к document
+                dropdown.classList.toggle('active');
+            });
+
+            // Закрытие dropdown при клике вне его
+            document.addEventListener('click', (event) => {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            // Слушатель прокрутки для обновления активной категории
+            window.addEventListener('scroll', updateActiveCategoryLink);
+            updateActiveCategoryLink(); // Первоначальная установка
+        });
+
+    </script>
+
+</body>
+</html>
